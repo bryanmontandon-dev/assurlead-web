@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mentor Call — Tableau de bord</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <header class="app"></header>
+
+    <main>
+      <div class="titre-page">
+        <div>
+          <h1>Tableau de bord</h1>
+          <p class="sous-titre" id="sous-titre">Chargement…</p>
+        </div>
+        <a class="btn primaire" href="record.html">+ Nouveau débrief</a>
+      </div>
+
+      <section class="grille k4" id="kpis"></section>
+
+      <section style="margin-top: 26px">
+        <h2>Dernier point du jour</h2>
+        <div class="carte" id="dernier-point">
+          <div class="vide">Aucun point du jour généré pour l'instant.</div>
+        </div>
+      </section>
+
+      <section style="margin-top: 26px">
+        <h2>Derniers calls</h2>
+        <div class="carte" id="derniers-calls" style="padding: 0">
+          <div class="vide">Chargement…</div>
+        </div>
+      </section>
+
+      <section style="margin-top: 26px">
+        <h2>État du système</h2>
+        <div class="carte" id="sante"></div>
+      </section>
+    </main>
+
+    <footer class="app">
+      Toutes tes données (transcriptions, clients, scores) restent sur ce Mac, dans
+      <code>data/mentor.db</code>. Seul le texte transcrit est envoyé à l'API Anthropic au moment
+      de l'analyse — jamais l'audio, jamais à un autre tiers.
+    </footer>
+
+    <script type="module" src="/js/dashboard.js"></script>
+  </body>
+</html>

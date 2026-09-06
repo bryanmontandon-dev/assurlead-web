@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mentor Call — Nouveau débrief</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <style>
+      label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+      select, input[type='text'], input[type='number'], textarea {
+        width: 100%;
+        font-family: inherit;
+        font-size: 15px;
+        color: var(--bleu-nuit);
+        padding: 10px 12px;
+        border: 1px solid var(--gris-bord);
+        border-radius: 8px;
+        background: var(--blanc);
+      }
+      select:focus, input:focus, textarea:focus { outline: 2px solid var(--bleu-clair); outline-offset: -1px; }
+      textarea { min-height: 240px; resize: vertical; line-height: 1.6; }
+      .champ { margin-bottom: 16px; }
+      .aide { font-size: 12.5px; color: var(--gris-texte); margin: 6px 0 0; }
+      .memo { background: #eef3f9; border: 1px solid #d6e2f0; border-radius: 8px; padding: 14px 16px; font-size: 13.5px; }
+      .memo ul { margin: 8px 0 0; padding-left: 18px; }
+      .memo li { margin-bottom: 3px; }
+
+      .capture {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 16px;
+        border: 1px solid var(--gris-bord);
+        border-radius: 10px;
+        background: #fbfcfe;
+      }
+      .bouton-micro {
+        width: 52px; height: 52px; flex: 0 0 52px;
+        border-radius: 50%;
+        border: none;
+        background: var(--bleu);
+        color: var(--blanc);
+        font-size: 20px;
+        cursor: pointer;
+        display: flex; align-items: center; justify-content: center;
+      }
+      .bouton-micro:hover { background: var(--bleu-nuit); }
+      .bouton-micro:disabled { background: var(--gris-bord); cursor: not-allowed; }
+      .bouton-micro.enregistre { background: var(--rouge); animation: pulse 1.4s ease-in-out infinite; }
+      @keyframes pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(192,57,43,.45) } 50% { box-shadow: 0 0 0 10px rgba(192,57,43,0) } }
+
+      .chrono { font-size: 21px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -0.5px; }
+      .etat-capture { font-size: 13px; color: var(--gris-texte); }
+
+      .consentement {
+        background: #fdf1e3;
+        border: 1px solid #f3d9b8;
+        border-radius: 8px;
+        padding: 12px 14px;
+        font-size: 13.5px;
+        margin-bottom: 14px;
+      }
+      .consentement label { display: flex; gap: 9px; align-items: flex-start; font-weight: 500; margin: 0; }
+      .consentement input { margin-top: 2px; flex: 0 0 auto; }
+
+      .categorie { margin-bottom: 18px; }
+      .categorie > h3 {
+        font-size: 12px; text-transform: uppercase; letter-spacing: .6px;
+        color: var(--gris-texte); margin: 0 0 8px; display: flex; align-items: center; gap: 8px;
+      }
+      .categorie > h3::after {
+        content: ''; flex: 1; height: 1px; background: var(--gris-bord);
+      }
+      .point {
+        border: 1px solid var(--gris-bord); border-radius: 8px;
+        padding: 11px 13px; margin-bottom: 8px; background: var(--blanc);
+      }
+      .point.recurrent { border-left: 3px solid var(--ambre); }
+      .point .libelle { font-size: 13.5px; line-height: 1.45; }
+      .point .phrase {
+        font-size: 13.5px; background: #eef6f3; border: 1px solid #cfe6dd;
+        border-radius: 6px; padding: 8px 10px; margin-top: 8px; font-style: italic;
+      }
+      .point .bas {
+        display: flex; align-items: center; justify-content: space-between;
+        gap: 10px; margin-top: 9px; flex-wrap: wrap;
+      }
+      .jauge-points { display: flex; gap: 4px; align-items: center; }
+      .pastille {
+        width: 9px; height: 9px; border-radius: 50%; background: var(--gris-bord);
+      }
+      .pastille.faite { background: var(--vert); }
+      .point .compte { font-size: 12px; color: var(--gris-texte); }
+      .btn-utilise {
+        font-family: inherit; font-size: 12.5px; font-weight: 600; cursor: pointer;
+        border: 1px solid var(--gris-bord); background: var(--blanc); color: var(--bleu-nuit);
+        border-radius: 6px; padding: 5px 10px;
+      }
+      .btn-utilise:hover { border-color: var(--vert); color: var(--vert); }
+      .btn-utilise:disabled { opacity: .5; cursor: default; }
+      .point.acquis-anim { opacity: 0; transform: translateX(12px); transition: all .35s ease; }
+    </style>
+  </head>
+  <body>
+    <header class="app"></header>
+
+    <main>
+      <div class="titre-page">
+        <div>
+          <h1>Nouveau débrief</h1>
+          <p class="sous-titre">Juste après le RDV, tant que c'est frais.</p>
+        </div>
+      </div>
+
+      <div class="grille k2" style="align-items: start">
+        <section class="carte">
+          <h2>1. Le débrief</h2>
+
+          <div class="champ">
+            <label for="mode">Type de capture</label>
+            <select id="mode">
+              <option value="debrief">Débrief oral — je résume l'échange moi-même</option>
+              <option value="enregistrement">Enregistrement du call — avec consentement client</option>
+            </select>
+          </div>
+
+          <div class="consentement" id="bloc-consentement" style="display: none">
+            <label>
+              <input type="checkbox" id="consentement" />
+              <span
+                >J'ai informé le client que cet échange est enregistré à des fins de qualité, et il
+                est d'accord.</span
+              >
+            </label>
+          </div>
+
+          <div class="capture champ">
+            <button class="bouton-micro" id="btn-micro" title="Démarrer l'enregistrement">●</button>
+            <div style="min-width: 0">
+              <div class="chrono" id="chrono">00:00</div>
+              <div class="etat-capture" id="etat-capture">Prêt à enregistrer</div>
+            </div>
+          </div>
+
+          <div class="champ">
+            <label for="transcript">Transcription <span style="font-weight: 400; color: var(--gris-texte)">— relis et corrige avant d'analyser</span></label>
+            <textarea
+              id="transcript"
+              placeholder="Enregistre-toi ci-dessus, ou écris directement ici (dictée macOS : double appui sur la touche Micro/Fn)."
+            ></textarea>
+            <p class="aide"><span id="compteur">0</span> caractères</p>
+          </div>
+
+          <div class="memo">
+            <strong>Pour un débrief utile, couvre ces 5 points :</strong>
+            <ul>
+              <li>Profil client et situation (famille, revenus, couvertures existantes)</li>
+              <li><strong>Le POURQUOI du client</strong> : ce qu'il protège vraiment, dit avec ses mots à lui</li>
+              <li>Les questions que j'ai posées en découverte</li>
+              <li>Les objections rencontrées + comment j'ai répondu, mot pour mot si possible</li>
+              <li>Comment j'ai demandé l'engagement</li>
+              <li>Ce sur quoi on s'est quitté (date de suivi précise ?)</li>
+            </ul>
+          </div>
+
+          <div class="memo" style="background:#eef6f3;border-color:#cfe6dd;margin-top:12px">
+            <strong>Start with Why — l'ordre qui désamorce le prix</strong>
+            <p style="margin:6px 0 0">
+              <strong>Pourquoi</strong> (ce qu'il protège : ses enfants, son entreprise, sa liberté)
+              → <strong>Comment</strong> (ton approche : bilan structuré, comparaison honnête)
+              → <strong>Quoi</strong> (le produit et la prime, en dernier).
+            </p>
+            <p style="margin:6px 0 0;color:var(--gris-texte)">
+              Une prime n'est « chère » que si elle ne pèse contre rien. Fais dire le pourquoi
+              au client — ne l'affirme pas à sa place.
+            </p>
+          </div>
+        </section>
+
+        <div style="display:flex;flex-direction:column;gap:16px">
+        <section class="carte" id="carte-carnet" style="display:none">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap">
+            <h2 style="margin:0">À travailler pendant ce RDV</h2>
+            <span class="puce" id="compte-carnet"></span>
+          </div>
+          <p class="aide" style="margin:6px 0 16px">
+            Ce qui a coincé lors de tes derniers RDV. Clique sur « Utilisé » quand tu t'en es
+            réellement servi — un point ne disparaît qu'après <strong>3 utilisations</strong>.
+            S'il ressort d'une analyse, le compteur repart à zéro.
+          </p>
+          <div id="carnet"></div>
+        </section>
+
+        <section class="carte">
+          <h2>2. Le contexte</h2>
+
+          <div class="champ">
+            <label for="client_id">Client</label>
+            <select id="client_id">
+              <option value="">— aucun / prospect non fiché —</option>
+            </select>
+            <p class="aide">Rattache ce RDV à une fiche pour retrouver tout l'historique du client. <a href="clients.html">Gérer les fiches</a></p>
+          </div>
+
+          <div class="champ">
+            <label for="etiquette">Étiquette (anonyme)</label>
+            <input id="etiquette" type="text" placeholder="ex. M.R. — Villeneuve" maxlength="120" />
+            <p class="aide">Initiales ou repère. Pas de nom complet : le fichier reste local, mais autant garder l'habitude.</p>
+          </div>
+
+          <div class="champ">
+            <label for="client_type">Type de client</label>
+            <select id="client_type">
+              <option value="">—</option>
+              <option value="portefeuille_existant">Portefeuille existant</option>
+              <option value="nouveau_prospect">Nouveau prospect</option>
+              <option value="recommandation">Recommandation</option>
+            </select>
+          </div>
+
+          <div class="champ">
+            <label for="produit_vise">Produit visé</label>
+            <select id="produit_vise">
+              <option value="">—</option>
+              <option value="vie_3a">Vie / 3a</option>
+              <option value="pme">PME</option>
+              <option value="non_vie">Non-vie</option>
+              <option value="bilan_general">Bilan général</option>
+              <option value="autre">Autre</option>
+            </select>
+          </div>
+
+          <div class="champ">
+            <label for="resultat">Résultat</label>
+            <select id="resultat">
+              <option value="">—</option>
+              <option value="signe">Signé</option>
+              <option value="rdv2_planifie">RDV 2 planifié</option>
+              <option value="a_relancer">À relancer</option>
+              <option value="perdu">Perdu</option>
+            </select>
+          </div>
+
+          <div class="champ" id="bloc-mapro" style="display: none">
+            <label for="montant_mapro">MAPRO générée (CHF)</label>
+            <input id="montant_mapro" type="number" min="0" step="10" placeholder="ex. 850" />
+          </div>
+
+          <button class="btn primaire" id="analyser" style="width: 100%">
+            Enregistrer et analyser
+          </button>
+          <button class="btn secondaire" id="enregistrer" style="width: 100%; margin-top: 8px">
+            Enregistrer sans analyser
+          </button>
+          <p class="aide" id="message" style="min-height: 18px"></p>
+        </section>
+        </div>
+      </div>
+    </main>
+
+    <footer class="app">
+      L'audio est transcrit sur ce Mac par whisper.cpp puis supprimé — il ne part sur aucun serveur.
+      Seul le texte est envoyé à l'API Anthropic, et seulement au moment de l'analyse.
+    </footer>
+
+    <script type="module" src="/js/recorder.js"></script>
+  </body>
+</html>

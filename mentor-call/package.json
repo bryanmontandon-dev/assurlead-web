@@ -1,0 +1,24 @@
+{
+  "name": "mentor-call",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Superviseur IA personnel pour conseiller en assurance — capture, transcription locale, analyse Claude, progression mesurable.",
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "start": "node --disable-warning=ExperimentalWarning server/index.js",
+    "dev": "node --watch --disable-warning=ExperimentalWarning server/index.js",
+    "service:install": "bash scripts/install-service.sh",
+    "service:uninstall": "bash scripts/uninstall-service.sh",
+    "service:status": "bash scripts/etat-service.sh",
+    "service:logs": "tail -f data/logs/serveur.log",
+    "service:restart": "launchctl kickstart -k gui/$(id -u)/com.bryanmathys.mentor-call"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.117.1",
+    "express": "^5.1.0",
+    "multer": "^2.0.2"
+  }
+}

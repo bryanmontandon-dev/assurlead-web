@@ -1,0 +1,213 @@
+/* Mentor Call — feuille de style unique. Sobre, pro, chargement instantané. */
+
+:root {
+  --bleu-nuit: #0b2545;
+  --bleu: #134074;
+  --bleu-clair: #3d6fa8;
+  --gris-fond: #f4f6f9;
+  --gris-bord: #dde3ec;
+  --gris-texte: #5b6b7f;
+  --blanc: #ffffff;
+  --vert: #1f9d78;
+  --ambre: #d98324;
+  --rouge: #c0392b;
+  --radius: 10px;
+  --ombre: 0 1px 2px rgba(11, 37, 69, 0.06), 0 4px 14px rgba(11, 37, 69, 0.06);
+  --police: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--police);
+  background: var(--gris-fond);
+  color: var(--bleu-nuit);
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--bleu); }
+
+/* --- En-tête ---------------------------------------------------------------- */
+
+header.app {
+  background: var(--bleu-nuit);
+  color: var(--blanc);
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  height: 58px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+header.app .marque {
+  font-weight: 700;
+  letter-spacing: -0.2px;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+header.app .marque::before {
+  content: '';
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--vert);
+}
+
+header.app nav { display: flex; gap: 4px; margin-left: auto; }
+
+header.app nav a {
+  color: #c5d4e6;
+  text-decoration: none;
+  padding: 7px 13px;
+  border-radius: 7px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+header.app nav a:hover { background: rgba(255, 255, 255, 0.09); color: var(--blanc); }
+header.app nav a.actif { background: var(--bleu); color: var(--blanc); }
+
+/* --- Structure --------------------------------------------------------------- */
+
+main { max-width: 1080px; margin: 0 auto; padding: 28px 24px 64px; }
+
+.titre-page {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 22px;
+  flex-wrap: wrap;
+}
+
+h1 { font-size: 24px; margin: 0; letter-spacing: -0.4px; }
+h2 { font-size: 16px; margin: 0 0 14px; letter-spacing: -0.2px; }
+.sous-titre { color: var(--gris-texte); font-size: 14px; margin: 4px 0 0; }
+
+.grille { display: grid; gap: 16px; }
+.grille.k4 { grid-template-columns: repeat(4, 1fr); }
+.grille.k3 { grid-template-columns: repeat(3, 1fr); }
+.grille.k2 { grid-template-columns: repeat(2, 1fr); }
+
+@media (max-width: 900px) {
+  .grille.k4 { grid-template-columns: repeat(2, 1fr); }
+  .grille.k3, .grille.k2 { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .grille.k4 { grid-template-columns: 1fr; }
+  main { padding: 20px 16px 48px; }
+  header.app { padding: 0 14px; gap: 10px; }
+  header.app nav a { padding: 7px 9px; font-size: 13px; }
+}
+
+/* --- Cartes ------------------------------------------------------------------ */
+
+.carte {
+  background: var(--blanc);
+  border: 1px solid var(--gris-bord);
+  border-radius: var(--radius);
+  padding: 18px;
+  box-shadow: var(--ombre);
+}
+
+.kpi .etiquette {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--gris-texte);
+  font-weight: 600;
+}
+
+.kpi .valeur {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -1px;
+  margin: 6px 0 2px;
+  font-variant-numeric: tabular-nums;
+}
+
+.kpi .detail { font-size: 13px; color: var(--gris-texte); }
+
+.delta { font-size: 13px; font-weight: 600; }
+.delta.pos { color: var(--vert); }
+.delta.neg { color: var(--rouge); }
+.delta.neutre { color: var(--gris-texte); }
+
+/* --- Boutons ----------------------------------------------------------------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.12s ease, border-color 0.12s ease;
+}
+
+.btn.primaire { background: var(--bleu); color: var(--blanc); }
+.btn.primaire:hover { background: var(--bleu-nuit); }
+.btn.secondaire { background: var(--blanc); color: var(--bleu-nuit); border-color: var(--gris-bord); }
+.btn.secondaire:hover { border-color: var(--bleu-clair); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* --- Barres de score --------------------------------------------------------- */
+
+.barre-piste {
+  height: 7px;
+  background: var(--gris-bord);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.barre-valeur { height: 100%; border-radius: 4px; background: var(--bleu); transition: width 0.3s ease; }
+.barre-valeur.faible { background: var(--rouge); }
+.barre-valeur.moyen { background: var(--ambre); }
+.barre-valeur.bon { background: var(--vert); }
+
+/* --- Divers ------------------------------------------------------------------ */
+
+.vide {
+  text-align: center;
+  color: var(--gris-texte);
+  padding: 34px 18px;
+  font-size: 14px;
+}
+
+.puce {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 3px 8px;
+  border-radius: 20px;
+  background: var(--gris-fond);
+  color: var(--gris-texte);
+  border: 1px solid var(--gris-bord);
+}
+.puce.ok { background: #e7f5f0; color: var(--vert); border-color: #bfe4d8; }
+.puce.alerte { background: #fdf1e3; color: var(--ambre); border-color: #f3d9b8; }
+
+footer.app {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 18px 24px 40px;
+  color: var(--gris-texte);
+  font-size: 12.5px;
+  border-top: 1px solid var(--gris-bord);
+}
