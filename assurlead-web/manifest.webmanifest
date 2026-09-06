@@ -1,9 +1,0 @@
-{
-  "name": "AssurLead & Network Studio",
-  "short_name": "AssurLead",
-  "start_url": "./",
-  "display": "standalone",
-  "background_color": "#0C1116",
-  "theme_color": "#0C1116",
-  "icons": [{ "src": "icone-180.png", "sizes": "180x180", "type": "image/png" }]
-}
