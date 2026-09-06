@@ -1,0 +1,173 @@
+/* AssurLead & Network Studio — thème sombre, pensé pour le pouce. */
+
+:root {
+  --fond: #0c1116;
+  --carte: #151c24;
+  --carte-haut: #1c2530;
+  --bord: #263241;
+  --texte: #e8edf2;
+  --doux: #8fa3b8;
+  --accent: #00c2a8;
+  --accent-sombre: #06231f;
+  --chaud: #ff6b4a;
+  --tiede: #ffb443;
+  --froid: #6c8fb5;
+  --police: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif;
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+body {
+  margin: 0;
+  font-family: var(--police);
+  background: var(--fond);
+  color: var(--texte);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+h1 { font-size: 22px; margin: 0; letter-spacing: -0.4px; }
+h2 { font-size: 17px; margin: 0 0 12px; letter-spacing: -0.2px; }
+h3 { font-size: 14px; margin: 0 0 8px; }
+a { color: var(--accent); }
+code { background: var(--carte-haut); padding: 2px 6px; border-radius: 4px; font-size: 13px; }
+
+/* --- En-tête et navigation --------------------------------------------------- */
+
+header {
+  background: var(--carte);
+  border-bottom: 1px solid var(--bord);
+  padding: 12px 16px calc(12px + env(safe-area-inset-top)) 16px;
+  padding-top: calc(12px + env(safe-area-inset-top));
+  position: sticky; top: 0; z-index: 20;
+}
+
+.marque { display: flex; align-items: center; gap: 10px; }
+.marque .pastille { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); flex: 0 0 10px; }
+.marque .titre { font-weight: 700; font-size: 16px; line-height: 1.15; }
+.marque .zone { font-size: 12px; color: var(--doux); }
+
+nav { display: flex; gap: 7px; overflow-x: auto; padding: 12px 16px 0; scrollbar-width: none; }
+nav::-webkit-scrollbar { display: none; }
+nav button {
+  font-family: inherit; font-size: 13.5px; font-weight: 600; white-space: nowrap;
+  background: var(--carte); color: var(--doux); border: 1px solid var(--bord);
+  border-radius: 999px; padding: 9px 15px; cursor: pointer; min-height: 42px;
+}
+nav button.actif { border-color: var(--accent); color: var(--accent); background: var(--accent-sombre); }
+
+main { max-width: 1000px; margin: 0 auto; padding: 18px 16px 60px; }
+
+/* --- Cartes ------------------------------------------------------------------ */
+
+.carte {
+  background: var(--carte); border: 1px solid var(--bord);
+  border-radius: 14px; padding: 18px; margin-bottom: 14px;
+}
+.carte-accent { border-left: 3px solid var(--accent); }
+.etiquette {
+  font-size: 11.5px; text-transform: uppercase; letter-spacing: .09em;
+  color: var(--doux); font-weight: 700; margin-bottom: 7px;
+}
+.aide { color: var(--doux); font-size: 13.5px; margin: 6px 0 0; }
+
+.grille { display: grid; gap: 14px; }
+.grille.k2 { grid-template-columns: repeat(2, 1fr); }
+.grille.k4 { grid-template-columns: repeat(4, 1fr); }
+@media (max-width: 760px) {
+  .grille.k4 { grid-template-columns: repeat(2, 1fr); }
+  .grille.k2 { grid-template-columns: 1fr; }
+}
+
+/* --- Formulaires -------------------------------------------------------------- */
+
+label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: var(--texte); }
+input, select, textarea {
+  width: 100%; font-family: inherit; font-size: 16px; /* 16px = pas de zoom iOS */
+  color: var(--texte); background: var(--carte-haut);
+  border: 1px solid var(--bord); border-radius: 10px; padding: 11px 13px;
+}
+input:focus, select:focus, textarea:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+textarea { min-height: 110px; resize: vertical; line-height: 1.6; }
+.champ { margin-bottom: 14px; }
+select { appearance: none; background-image: linear-gradient(45deg, transparent 50%, var(--doux) 50%), linear-gradient(135deg, var(--doux) 50%, transparent 50%); background-position: calc(100% - 18px) 20px, calc(100% - 13px) 20px; background-size: 5px 5px, 5px 5px; background-repeat: no-repeat; }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  font-family: inherit; font-size: 14.5px; font-weight: 600; cursor: pointer;
+  border: 1px solid var(--bord); border-radius: 10px; padding: 12px 18px;
+  background: var(--carte-haut); color: var(--texte); min-height: 46px; text-decoration: none;
+}
+.btn.primaire { background: var(--accent); color: var(--accent-sombre); border-color: var(--accent); }
+.btn.large { width: 100%; }
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+.btn-mini {
+  font-family: inherit; font-size: 12.5px; font-weight: 600; cursor: pointer;
+  background: none; border: 1px solid var(--bord); color: var(--doux);
+  border-radius: 7px; padding: 6px 11px;
+}
+.btn-mini:hover { border-color: var(--accent); color: var(--accent); }
+.btn-mini.danger:hover { border-color: var(--chaud); color: var(--chaud); }
+
+/* --- Puces et états ----------------------------------------------------------- */
+
+.puce {
+  display: inline-block; padding: 3px 10px; border-radius: 999px;
+  font-size: 11.5px; font-weight: 700; letter-spacing: .03em;
+  border: 1px solid var(--bord); color: var(--doux); background: var(--carte-haut);
+}
+.puce-chaud { color: var(--chaud); border-color: #4a2a22; background: #241612; }
+.puce-tiede { color: var(--tiede); border-color: #4a3b1e; background: #241d10; }
+.puce-froid { color: var(--froid); border-color: #23364a; background: #121c26; }
+.puce-ok { color: var(--accent); border-color: #16413b; background: var(--accent-sombre); }
+
+/* --- Onglets internes ---------------------------------------------------------- */
+
+.onglets { display: flex; gap: 6px; margin-bottom: 16px; overflow-x: auto; scrollbar-width: none; }
+.onglets::-webkit-scrollbar { display: none; }
+.onglets button {
+  font-family: inherit; font-size: 13.5px; font-weight: 600; white-space: nowrap;
+  background: none; border: none; border-bottom: 2px solid transparent;
+  color: var(--doux); padding: 9px 4px; margin-right: 10px; cursor: pointer;
+}
+.onglets button.actif { color: var(--accent); border-bottom-color: var(--accent); }
+
+/* --- Métriques ---------------------------------------------------------------- */
+
+.kpi { background: var(--carte); border: 1px solid var(--bord); border-radius: 14px; padding: 15px 17px; }
+.kpi .valeur { font-size: 27px; font-weight: 700; letter-spacing: -1px; margin: 5px 0 2px; font-variant-numeric: tabular-nums; }
+.kpi .detail { font-size: 12.5px; color: var(--doux); }
+
+.piste { height: 12px; background: var(--carte-haut); border-radius: 6px; overflow: hidden; border: 1px solid var(--bord); }
+.remplissage { height: 100%; background: var(--accent); transition: width .4s ease; }
+
+/* --- Divers -------------------------------------------------------------------- */
+
+.vide { text-align: center; color: var(--doux); padding: 30px 16px; font-size: 14px; }
+.bloc-copie {
+  background: var(--carte-haut); border: 1px solid var(--bord); border-radius: 10px;
+  padding: 13px 15px; font-size: 14.5px; line-height: 1.6; white-space: pre-wrap;
+}
+.avertissement {
+  background: #241d10; border: 1px solid #4a3b1e; color: #ffd9a0;
+  border-radius: 10px; padding: 12px 14px; font-size: 13.5px; line-height: 1.55;
+}
+.reussite { color: var(--accent); font-size: 13.5px; }
+.erreur { color: var(--chaud); font-size: 13.5px; }
+
+/* --- Verrou -------------------------------------------------------------------- */
+
+#verrou {
+  position: fixed; inset: 0; background: var(--fond); z-index: 100;
+  display: flex; align-items: center; justify-content: center; padding: 24px;
+}
+#verrou .boite { max-width: 340px; width: 100%; text-align: center; }
+#verrou input { text-align: center; font-size: 20px; letter-spacing: 4px; margin-top: 18px; }
+
+table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+th, td { text-align: left; padding: 9px 10px; border-top: 1px solid var(--bord); }
+th { font-size: 11.5px; text-transform: uppercase; letter-spacing: .05em; color: var(--doux); }
+td.nombre, th.nombre { text-align: right; font-variant-numeric: tabular-nums; }
+.defilement { overflow-x: auto; }
