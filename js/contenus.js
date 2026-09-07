@@ -1,6 +1,6 @@
 /** Contenus métier : templates de messages, playbook terrain, repères réseau. */
 
-export const CANTONS = ['Vaud', 'Valais', 'Toute la Suisse romande'];
+export const CANTONS = ['Vaud', 'Valais', 'Genève', 'Toute la Suisse romande'];
 
 export const PROFILS = {
   'Indépendants / PME': {
@@ -203,6 +203,9 @@ export const EVENEMENTS_AMORCE = [
   ['Réunion hebdomadaire BNI (à dater)', 'BNI Suisse romande', 'Lausanne / Sion', 'Toute la Suisse romande', 'Réseau d’affaires', 'Indépendants, artisans, professions libérales', 'Payant', 'https://bnisuisse.ch'],
   ['Événement CCIV (à dater)', 'Chambre valaisanne de commerce et d’industrie', 'Sion', 'Valais', 'Réseau d’affaires', 'Entreprises valaisannes', 'Payant', 'https://www.cci-valais.ch'],
   ['Afterwork JCI (à dater)', 'Jeune Chambre Internationale', 'Lausanne / Sion', 'Toute la Suisse romande', 'Afterwork ouvert', 'Jeunes actifs, entrepreneurs 18-40', 'Gratuit', 'https://www.jci.ch'],
+  ['Événement CCIG (à dater)', 'CCIG — Chambre de commerce, d’industrie et des services de Genève', 'Genève', 'Genève', 'Réseau d’affaires', 'Dirigeants et PME genevoises', 'Payant', 'https://www.ccig.ch'],
+  ['Rendez-vous FER Genève (à dater)', 'FER Genève — Fédération des entreprises romandes', 'Genève', 'Genève', 'Réseau d’affaires', 'Indépendants, employeurs genevois', 'Payant', 'https://www.fer-ge.ch'],
+  ['Salon RH Suisse', 'Salon RH', 'Genève', 'Genève', 'Salon pro', 'DRH, dirigeants, prestataires', 'Payant', 'https://www.salon-rh.ch'],
   ['Salon des métiers et de la formation', 'Beaulieu', 'Lausanne', 'Vaud', 'Salon pro', 'Jeunes en formation, premiers emplois', 'Gratuit', 'https://www.metiersformation.ch'],
   ['Foire du Valais', 'Foire du Valais', 'Martigny', 'Valais', 'Salon pro', 'Grand public, PME régionales', 'Payant', 'https://www.foireduvalais.ch'],
 ];

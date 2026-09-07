@@ -10,7 +10,7 @@ import * as D from './donnees.js';
 import * as F from './fichier.js';
 import { VUES } from './modules.js';
 
-export const VERSION = '2026.09.07-3';
+export const VERSION = '2026.09.07-5';
 
 const el = (id) => document.getElementById(id);
 const CLE_CODE = 'assurlead:code';

@@ -20,6 +20,7 @@ const BASE_VIDE = {
   evenements: [],
   activites: [],
   documents: [],
+  debriefs: [],
   reglages: { objectif_portefeuille: 600, portefeuille_actuel: 0, signature: 'Bryan' },
 };
 
@@ -190,7 +191,7 @@ export async function importerTout(fichier, { fusion = true } = {}) {
   }
 
   let ajoutes = 0;
-  for (const collection of ['prospects', 'evenements', 'activites', 'documents']) {
+  for (const collection of ['prospects', 'evenements', 'activites', 'documents', 'debriefs']) {
     const connus = new Set(base[collection].map((e) => e.id));
     for (const entree of lu[collection] ?? []) {
       if (!connus.has(entree.id)) {

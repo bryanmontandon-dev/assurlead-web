@@ -1,6 +1,9 @@
 /** Les 6 modules de l'app. Chacun rend son HTML puis branche ses événements. */
 import * as D from './donnees.js';
 import * as C from './contenus.js';
+import * as A from './analyse.js';
+import { BRANCHES, QUIZ } from './training.js';
+import { LIGNE_DROITE, START_WITH_WHY, COMBINAISON } from './methodes.js';
 
 /* --- Utilitaires -------------------------------------------------------------- */
 
@@ -174,6 +177,18 @@ function approche(hote) {
     <div class="onglets">
       <button data-onglet="mail" class="actif">📧 E-mail</button>
       <button data-onglet="li">💼 LinkedIn — 3 étapes</button>
+    </div>
+
+    <div class="carte" style="background:var(--accent-clair);border-color:var(--accent-bord)">
+      <div class="etiquette" style="color:var(--accent)">Ce que fait ce message</div>
+      <p style="margin:0 0 8px;font-size:14px">
+        <strong>Start with Why</strong> — il ouvre sur la situation du client et ce qu'elle met en jeu,
+        jamais sur le produit. Le QUOI n'arrive qu'à la fin, et seulement comme conséquence.
+      </p>
+      <p style="margin:0;font-size:14px">
+        <strong>Ligne droite</strong> — un seul point B : l'échange court. Pas d'argument surnuméraire,
+        pas de rareté fabriquée, et une porte de sortie explicite qui désamorce la méfiance.
+      </p>
     </div>
 
     <div data-panneau="mail" id="panneau-mail"></div>
@@ -418,6 +433,8 @@ function playbook(hote) {
       <button data-onglet="pitch">2 · Le pitch</button>
       <button data-onglet="objections">3 · Objections</button>
       <button data-onglet="closing">4 · Closing réseau</button>
+      <button data-onglet="why">◎ Start with Why</button>
+      <button data-onglet="ligne">→ Ligne droite</button>
     </div>
 
     <div data-panneau="glace">
@@ -474,6 +491,97 @@ function playbook(hote) {
           <p style="line-height:1.65;margin:0 0 10px">${h(reponse)}</p>
           <p class="aide" style="margin:0">↳ ${h(pourquoi)}</p>
         </div>`).join('')}
+    </div>
+
+    <div data-panneau="why" hidden>
+      <div class="carte carte-accent">
+        <div class="etiquette">${h(START_WITH_WHY.principe.titre)}</div>
+        <p style="margin:0 0 10px;font-size:14.5px">${h(START_WITH_WHY.principe.texte)}</p>
+        <div class="bloc-copie"><strong>${h(START_WITH_WHY.principe.cle)}</strong></div>
+      </div>
+
+      ${START_WITH_WHY.cercle.map((n, i) => `
+        <div class="carte">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+            <span style="width:26px;height:26px;border-radius:50%;background:var(--accent);color:#fff;
+                         display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700">${i + 1}</span>
+            <strong style="font-size:15px">${h(n.niveau)}</strong>
+          </div>
+          <p style="margin:0 0 6px;font-size:14px"><strong>Chez le client :</strong> ${h(n.cote_client)}</p>
+          <p style="margin:0 0 10px;font-size:14px"><strong>Chez toi :</strong> ${h(n.cote_toi)}</p>
+          <div class="bloc-copie" style="font-size:13.5px">« ${h(n.phrase)} »</div>
+        </div>`).join('')}
+
+      <div class="carte">
+        <div class="etiquette">Pourquoi ça marche sur ton point faible</div>
+        <p style="margin:0;font-size:14.5px">${h(START_WITH_WHY.pourquoiCaMarche)}</p>
+      </div>
+
+      <div class="carte">
+        <div class="etiquette">Les trois erreurs</div>
+        ${START_WITH_WHY.erreurs.map(([titre, detail]) => `
+          <div style="border-top:1px solid var(--bord);padding:10px 0">
+            <strong style="font-size:13.5px">${h(titre)}</strong>
+            <p class="aide" style="margin:3px 0 0">${h(detail)}</p>
+          </div>`).join('')}
+      </div>
+    </div>
+
+    <div data-panneau="ligne" hidden>
+      <div class="carte carte-accent">
+        <div class="etiquette">${h(LIGNE_DROITE.principe.titre)}</div>
+        <p style="margin:0 0 10px;font-size:14.5px">${h(LIGNE_DROITE.principe.texte)}</p>
+        <div class="bloc-copie"><strong>${h(LIGNE_DROITE.principe.cle)}</strong></div>
+      </div>
+
+      <div class="carte">
+        <div class="etiquette">Les trois certitudes</div>
+        <p class="aide" style="margin:0 0 12px">
+          Le client doit être convaincu sur ces trois axes. Une objection signale toujours
+          lequel des trois manque.
+        </p>
+        ${LIGNE_DROITE.certitudes.map((c) => `
+          <div style="border-top:1px solid var(--bord);padding:12px 0">
+            <strong style="font-size:14px">${h(c.nom)}</strong>
+            <p style="margin:4px 0 6px;font-size:14px;font-style:italic">${h(c.question)}</p>
+            <p style="margin:0 0 8px;font-size:14px">${h(c.commentFaire)}</p>
+            <div class="bloc-copie" style="font-size:13.5px">« ${h(c.phrase)} »</div>
+          </div>`).join('')}
+      </div>
+
+      ${LIGNE_DROITE.etapes.map((e) => `
+        <div class="carte">
+          <strong style="font-size:15px">${h(e.nom)}</strong>
+          <p class="aide" style="margin:4px 0 8px"><strong>Objectif :</strong> ${h(e.objectif)}</p>
+          <p style="margin:0 0 10px;font-size:14px">${h(e.detail)}</p>
+          <div class="bloc-copie" style="font-size:13.5px;margin-bottom:8px">✓ ${h(e.aFaire)}</div>
+          <div class="avertissement" style="font-size:13px">✕ ${h(e.aEviter)}</div>
+        </div>`).join('')}
+
+      <div class="carte">
+        <div class="etiquette">Tonalités</div>
+        <p class="aide" style="margin:0 0 10px">Ce n'est pas ce que tu dis, c'est comment.</p>
+        ${LIGNE_DROITE.tonalites.map(([nom, detail]) => `
+          <div style="border-top:1px solid var(--bord);padding:10px 0">
+            <strong style="font-size:13.5px">${h(nom)}</strong>
+            <p class="aide" style="margin:3px 0 0">${h(detail)}</p>
+          </div>`).join('')}
+      </div>
+
+      <div class="carte">
+        <div class="etiquette" style="color:var(--chaud)">Ce que j'ai volontairement écarté</div>
+        <p style="margin:0;font-size:14px">${h(LIGNE_DROITE.ethique)}</p>
+      </div>
+
+      <div class="carte carte-accent">
+        <div class="etiquette">${h(COMBINAISON.titre)}</div>
+        <p style="margin:0 0 12px;font-size:14.5px">${h(COMBINAISON.texte)}</p>
+        ${COMBINAISON.etapes.map(([phase, quoi]) => `
+          <div style="display:flex;gap:12px;border-top:1px solid var(--bord);padding:9px 0">
+            <strong style="font-size:13.5px;min-width:100px">${h(phase)}</strong>
+            <span style="font-size:13.5px">${h(quoi)}</span>
+          </div>`).join('')}
+      </div>
     </div>
 
     <div data-panneau="closing" hidden>
@@ -964,6 +1072,324 @@ function importer(hote) {
   });
 }
 
+
+/* =============================================================================
+   MODULE 7 — DÉBRIEF & ANALYSE (local, sans serveur)
+   ========================================================================== */
+
+const COULEUR_NOTE = (n) => (n < 4 ? 'var(--chaud)' : n < 7 ? 'var(--tiede)' : 'var(--accent)');
+
+function barreNote(nom, note) {
+  return `
+    <div style="margin-bottom:11px">
+      <div style="display:flex;justify-content:space-between;font-size:13.5px;margin-bottom:4px">
+        <span>${h(nom)}</span>
+        <span style="font-weight:700;font-variant-numeric:tabular-nums">${note}<span style="color:var(--doux);font-weight:400"> / 10</span></span>
+      </div>
+      <div class="piste" style="height:8px">
+        <div class="remplissage" style="width:${note * 10}%;background:${COULEUR_NOTE(note)}"></div>
+      </div>
+    </div>`;
+}
+
+function debrief(hote) {
+  hote.innerHTML = `
+    <h2>Débrief &amp; analyse</h2>
+    <p class="aide" style="margin-bottom:14px">
+      Juste après un RDV, raconte à voix haute ce que tu as dit et ce que le client a répondu.
+      L'analyse est immédiate et tourne <strong>sur ton appareil</strong>, même sans réseau.
+    </p>
+
+    <div class="onglets">
+      <button data-onglet="nouveau" class="actif">🎙️ Nouveau débrief</button>
+      <button data-onglet="historique">📚 Historique</button>
+    </div>
+
+    <div data-panneau="nouveau">
+      <div class="carte">
+        <div id="bloc-dictee"></div>
+
+        <div class="champ">
+          <label for="d-texte">Ton débrief</label>
+          <textarea id="d-texte" style="min-height:220px"
+            placeholder="Ce que j'ai dit, ce qu'il a répondu, les objections, comment on s'est quitté…"></textarea>
+          <p class="aide"><span id="d-compteur">0</span> mot(s)</p>
+        </div>
+
+        <div class="grille k2">
+          <div class="champ">
+            <label for="d-client">Type de client</label>
+            <select id="d-client">${options(Object.keys(C.PROFILS))}</select>
+          </div>
+          <div class="champ">
+            <label for="d-sujet">Sujet principal</label>
+            <select id="d-sujet">${options(C.SUJETS)}</select>
+          </div>
+        </div>
+
+        <button class="btn primaire large" id="d-analyser">🔍 Analyser mon débrief</button>
+        <p class="aide" id="d-message"></p>
+      </div>
+
+      <div id="d-resultat"></div>
+    </div>
+
+    <div data-panneau="historique" hidden>
+      <div id="d-historique"></div>
+    </div>`;
+
+  brancherOnglets(hote);
+
+  const texte = el('d-texte');
+  texte.addEventListener('input', () => {
+    el('d-compteur').textContent = texte.value.trim() ? texte.value.trim().split(/\s+/).length : 0;
+  });
+
+  /* --- Dictée vocale --- */
+  const blocDictee = el('bloc-dictee');
+  if (A.dicteeSupportee()) {
+    blocDictee.innerHTML = `
+      <button class="btn large" id="d-micro" style="margin-bottom:10px">🎙️ Dicter mon débrief</button>
+      <p class="aide" style="margin:0 0 14px">
+        La dictée du navigateur envoie ta voix aux serveurs d'Apple ou de Google pour la
+        transcrire. C'est acceptable pour <strong>ton</strong> débrief — n'enregistre jamais
+        un client avec.
+      </p>`;
+
+    let reco = null;
+    const bouton = el('d-micro');
+    const acquisAvant = () => texte.value;
+
+    bouton.addEventListener('click', () => {
+      if (reco) { reco.stop(); reco = null; bouton.textContent = '🎙️ Dicter mon débrief'; return; }
+      const debut = acquisAvant() ? acquisAvant().trim() + ' ' : '';
+      try {
+        reco = A.demarrerDictee({
+          surTexte: (acquis, provisoire) => {
+            texte.value = debut + acquis + provisoire;
+            texte.dispatchEvent(new Event('input'));
+          },
+          surFin: () => { reco = null; bouton.textContent = '🎙️ Dicter mon débrief'; },
+          surErreur: (m) => {
+            el('d-message').innerHTML = `<span class="erreur">${h(m)}</span>`;
+            reco = null; bouton.textContent = '🎙️ Dicter mon débrief';
+          },
+        });
+        bouton.textContent = '⏹️ Arrêter la dictée';
+      } catch (e) {
+        el('d-message').innerHTML = `<span class="erreur">Dictée indisponible : ${h(e.message)}</span>`;
+      }
+    });
+  } else {
+    blocDictee.innerHTML = `
+      <p class="aide" style="margin:0 0 14px">
+        Ce navigateur ne propose pas la dictée intégrée. Utilise la dictée de ton clavier
+        (icône micro) ou écris directement ci-dessous.
+      </p>`;
+  }
+
+  /* --- Analyse --- */
+  function afficherResultat(r, deja = false) {
+    el('d-resultat').innerHTML = `
+      <div class="carte carte-accent">
+        <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:16px">
+          <div style="width:74px;height:74px;border-radius:50%;flex:0 0 74px;display:flex;
+                      flex-direction:column;align-items:center;justify-content:center;
+                      background:${COULEUR_NOTE(r.global)};color:#fff">
+            <span style="font-size:24px;font-weight:700;line-height:1">${r.global}</span>
+            <span style="font-size:10px;text-transform:uppercase;letter-spacing:.5px">global</span>
+          </div>
+          <p class="aide" style="margin:0;flex:1;min-width:180px">
+            ${r.mots} mots analysés sur 10 critères, issus de la grille de vente,
+            de Start with Why et de la Ligne droite.
+          </p>
+        </div>
+        ${['Start with Why', 'Ligne droite', 'Grille de vente'].map((m) => {
+          const lignes = Object.values(r.scores).filter((s) => s.methode === m);
+          if (lignes.length === 0) return '';
+          return `<div class="etiquette" style="margin-top:14px">${h(m)}</div>
+                  ${lignes.map((s) => barreNote(s.nom, s.note)).join('')}`;
+        }).join('')}
+      </div>
+
+      ${r.priorite ? `
+        <div class="carte" style="background:var(--accent-clair);border-color:var(--accent-bord)">
+          <div class="etiquette" style="color:var(--accent)">La priorité · ${h(r.priorite.methode)}</div>
+          <p style="margin:0 0 10px;font-weight:600">${h(r.priorite.probleme)}</p>
+          <div class="bloc-copie" style="background:var(--carte)">« ${h(r.priorite.phrase)} »</div>
+        </div>` : ''}
+
+      ${r.ameliorations.length ? `
+        <div class="carte">
+          <div class="etiquette">Points à améliorer (${r.ameliorations.length})</div>
+          ${r.ameliorations.map((a) => `
+            <div style="border-top:1px solid var(--bord);padding:12px 0">
+              <strong style="font-size:13.5px">${h(a.nom)}</strong>
+              <span class="puce" style="margin-left:6px">${h(a.methode)}</span>
+              <p style="margin:4px 0 8px;font-size:14px">${h(a.probleme)}</p>
+              <div class="bloc-copie" style="font-size:13.5px">À dire plutôt : « ${h(a.phrase)} »</div>
+            </div>`).join('')}
+        </div>`
+        : '<div class="carte"><span class="reussite">Aucun point faible détecté sur cette grille. Beau travail.</span></div>'}
+
+      ${deja ? '' : '<button class="btn primaire large" id="d-enregistrer">💾 Enregistrer ce débrief</button>'}
+      <p class="aide" id="d-message2"></p>`;
+
+    el('d-enregistrer')?.addEventListener('click', (e) => {
+      D.ajouter('debriefs', {
+        texte: texte.value.trim(), client: el('d-client').value, sujet: el('d-sujet').value,
+        global: r.global, scores: r.scores, ameliorations: r.ameliorations, priorite: r.priorite,
+      });
+      e.target.disabled = true;
+      el('d-message2').innerHTML = '<span class="reussite">Enregistré dans l’historique.</span>';
+      rendreHistorique();
+    });
+  }
+
+  el('d-analyser').addEventListener('click', () => {
+    el('d-message').textContent = '';
+    try {
+      afficherResultat(A.analyser(texte.value));
+      el('d-resultat').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } catch (e) {
+      el('d-message').innerHTML = `<span class="erreur">${h(e.message)}</span>`;
+    }
+  });
+
+  /* --- Historique --- */
+  function rendreHistorique() {
+    const liste = D.base.debriefs ?? [];
+    el('d-historique').innerHTML = liste.length === 0
+      ? '<div class="carte"><div class="vide">Aucun débrief enregistré.</div></div>'
+      : liste.map((d) => `
+        <div class="carte">
+          <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline">
+            <strong>${h(dateFr(d.cree_le))} · ${h(d.sujet)}</strong>
+            <span style="font-size:20px;font-weight:700;color:${COULEUR_NOTE(d.global)}">${d.global}<span style="font-size:12px;color:var(--doux)">/10</span></span>
+          </div>
+          <p class="aide" style="margin:4px 0 8px">${h(d.client)}</p>
+          ${d.priorite ? `<div class="bloc-copie" style="font-size:13.5px">« ${h(d.priorite.phrase)} »</div>` : ''}
+          <div style="display:flex;gap:7px;margin-top:10px">
+            <button class="btn-mini" data-voir="${d.id}">Voir le texte</button>
+            <button class="btn-mini danger" data-suppr-debrief="${d.id}">🗑️</button>
+          </div>
+          <div id="texte-${d.id}" hidden><div class="bloc-copie" style="margin-top:10px">${h(d.texte)}</div></div>
+        </div>`).join('');
+
+    el('d-historique').querySelectorAll('[data-voir]').forEach((b) =>
+      b.addEventListener('click', () => {
+        const z = el(`texte-${b.dataset.voir}`);
+        z.hidden = !z.hidden;
+        b.textContent = z.hidden ? 'Voir le texte' : 'Masquer';
+      }));
+    el('d-historique').querySelectorAll('[data-suppr-debrief]').forEach((b) =>
+      b.addEventListener('click', () => { D.supprimer('debriefs', b.dataset.supprDebrief); rendreHistorique(); }));
+  }
+
+  rendreHistorique();
+}
+
+/* =============================================================================
+   MODULE 8 — TRAINING : les branches d'assurance
+   ========================================================================== */
+
+function training(hote) {
+  const familles = Object.keys(BRANCHES);
+
+  hote.innerHTML = `
+    <h2>Training</h2>
+    <p class="aide" style="margin-bottom:14px">
+      Les branches, ce qu'elles couvrent, les questions à poser et le piège classique.
+      Volontairement sans chiffres : franchises, plafonds et seuils changent chaque année.
+    </p>
+
+    <div class="onglets">
+      ${familles.map((f, i) => `<button data-onglet="f${i}" ${i === 0 ? 'class="actif"' : ''}>${h(f)}</button>`).join('')}
+      <button data-onglet="quiz">🎯 Quiz</button>
+    </div>
+
+    ${familles.map((f, i) => `
+      <div data-panneau="f${i}" ${i === 0 ? '' : 'hidden'}>
+        ${BRANCHES[f].map((b) => `
+          <div class="carte">
+            <h3 style="margin:0 0 8px">${h(b.nom)}</h3>
+            <p style="margin:0 0 10px;font-size:14.5px">${h(b.role)}</p>
+            <div class="bloc-copie" style="font-size:13.5px;margin-bottom:12px">
+              <strong>À retenir :</strong> ${h(b.retenir)}
+            </div>
+            <div class="etiquette">Questions à poser</div>
+            <ul style="margin:0 0 12px;padding-left:19px;font-size:14px">
+              ${b.questions.map((q) => `<li style="margin-bottom:4px">${h(q)}</li>`).join('')}
+            </ul>
+            <div class="avertissement"><strong>Le piège :</strong> ${h(b.piege)}</div>
+          </div>`).join('')}
+      </div>`).join('')}
+
+    <div data-panneau="quiz" hidden>
+      <div class="carte">
+        <p class="aide" style="margin:0">
+          ${QUIZ.length} situations réelles. Réponds, puis compare — l'explication compte
+          plus que le score.
+        </p>
+      </div>
+      <div id="quiz-liste"></div>
+      <div class="carte" id="quiz-score" hidden></div>
+    </div>`;
+
+  brancherOnglets(hote);
+
+  const repondu = new Map();
+
+  el('quiz-liste').innerHTML = QUIZ.map((q, i) => `
+    <div class="carte" data-question="${i}">
+      <p style="font-weight:600;margin:0 0 12px">${i + 1}. ${h(q.question)}</p>
+      ${q.reponses.map((r, j) => `
+        <button class="btn large" data-q="${i}" data-r="${j}" style="margin-bottom:8px;text-align:left;justify-content:flex-start">${h(r)}</button>`).join('')}
+      <div id="explication-${i}" hidden></div>
+    </div>`).join('');
+
+  el('quiz-liste').querySelectorAll('[data-q]').forEach((b) =>
+    b.addEventListener('click', () => {
+      const i = Number(b.dataset.q), j = Number(b.dataset.r);
+      if (repondu.has(i)) return;
+      repondu.set(i, j === QUIZ[i].bonne);
+
+      const carte = el('quiz-liste').querySelector(`[data-question="${i}"]`);
+      carte.querySelectorAll('[data-q]').forEach((autre) => {
+        const k = Number(autre.dataset.r);
+        autre.disabled = true;
+        if (k === QUIZ[i].bonne) {
+          autre.style.borderColor = 'var(--accent)';
+          autre.style.background = 'var(--accent-clair)';
+          autre.style.color = 'var(--accent)';
+        } else if (k === j) {
+          autre.style.borderColor = 'var(--chaud)';
+          autre.style.background = 'var(--chaud-fond)';
+          autre.style.color = 'var(--chaud)';
+        }
+      });
+
+      const zone = el(`explication-${i}`);
+      zone.hidden = false;
+      zone.innerHTML = `<div class="bloc-copie" style="font-size:13.5px">${h(QUIZ[i].explication)}</div>`;
+
+      if (repondu.size === QUIZ.length) {
+        const bons = [...repondu.values()].filter(Boolean).length;
+        const zoneScore = el('quiz-score');
+        zoneScore.hidden = false;
+        zoneScore.innerHTML = `
+          <div class="etiquette">Résultat</div>
+          <p style="font-size:19px;font-weight:700;margin:0">${bons} / ${QUIZ.length}</p>
+          <p class="aide" style="margin:6px 0 0">
+            ${bons === QUIZ.length ? 'Sans faute. Ces réflexes sont acquis.'
+              : bons >= QUIZ.length * 0.7 ? 'Bonne base. Relis les fiches des questions ratées.'
+              : 'À retravailler : reprends les fiches avant ton prochain RDV.'}
+          </p>`;
+        zoneScore.scrollIntoView({ behavior: 'smooth' });
+      }
+    }));
+}
+
 /* =============================================================================
    Table des vues
    ========================================================================== */
@@ -972,7 +1398,9 @@ export const VUES = {
   dashboard: { libelle: '📈 Dashboard', rendre: dashboard },
   approche: { libelle: '✉️ Approche', rendre: approche },
   evenements: { libelle: '📅 Événements', rendre: evenements },
+  debrief: { libelle: '🎙️ Débrief', rendre: debrief },
   playbook: { libelle: '🎯 Playbook', rendre: playbook },
+  training: { libelle: '🎓 Training', rendre: training },
   crm: { libelle: '📇 CRM express', rendre: crm },
   import: { libelle: '📥 Import & base', rendre: importer },
 };
