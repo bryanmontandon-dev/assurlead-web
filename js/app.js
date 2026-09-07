@@ -133,9 +133,17 @@ function etapeCode() {
   };
 
   el('code-bouton').onclick = valider;
-  el('code-saisie').onkeydown = (e) => e.key === 'Enter'
-    && (premiereFois ? el('code-confirmation').focus() : valider());
-  el('code-confirmation').onkeydown = (e) => e.key === 'Enter' && valider();
+
+  // Accolades obligatoires : un handler « on* » qui renvoie false annule
+  // l'événement — la forme « condition && action » empêchait toute frappe.
+  el('code-saisie').onkeydown = (e) => {
+    if (e.key !== 'Enter') return;
+    if (premiereFois) el('code-confirmation').focus();
+    else valider();
+  };
+  el('code-confirmation').onkeydown = (e) => {
+    if (e.key === 'Enter') valider();
+  };
 }
 
 /* --- Ouverture ------------------------------------------------------------------ */
