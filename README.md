@@ -16,17 +16,42 @@ Copilote d'acquisition pour courtier en assurance — Vaud & Valais.
 
 ## La base de données : un seul fichier
 
-Tout tient dans **un objet JSON unique**, stocké dans le navigateur de l'appareil
-(`localStorage`) et exportable en **un fichier** depuis *Import & base*.
+Tout tient dans **un objet JSON unique**. Au premier lancement, l'app demande
+où le ranger — avant même le code d'accès.
 
-- **Exporter** → `assurlead-AAAA-MM-JJ.json` : toute ta base, prospects compris.
-- **Réimporter** sur un autre appareil → tu retrouves tout.
-- La fusion est **idempotente** : réimporter deux fois le même fichier ne crée aucun doublon.
+### Option 1 — fichier lié (Chrome / Edge sur ordinateur)
 
-Pose ce fichier sur iCloud Drive : c'est ta synchronisation entre Mac et iPhone,
-et ta sauvegarde.
+Tu désignes `assurlead-base.json` dans ton dossier iCloud, et l'app **y écrit
+toute seule** à chaque modification (écriture différée d'une seconde, pour ne
+pas faire tourner iCloud en boucle). Rien à exporter à la main.
 
-⚠️ **Vider les données de navigation efface la base.** Exporte régulièrement.
+Le fichier de départ est déjà créé ici :
+
+```
+~/Library/Mobile Documents/com~apple~CloudDocs/AssurLead/assurlead-base.json
+```
+
+Il contient la structure vide et les 7 repères réseau romands.
+
+### Option 2 — stockage de l'appareil (Safari, iPhone)
+
+Safari n'implémente pas l'écriture directe dans un fichier, ni sur Mac ni sur
+iPhone. Les données restent alors dans le navigateur, et tu les envoies vers
+iCloud avec **Exporter** dans l'onglet *Import & base*. Sur iPhone, le fichier
+téléchargé s'enregistre dans l'app **Fichiers**, où tu peux le déposer sur iCloud.
+
+### Dans les deux cas
+
+- **Réimporter** le fichier sur un autre appareil → tu retrouves tout.
+- La fusion est **idempotente** : réimporter deux fois le même fichier ne crée
+  aucun doublon.
+
+⚠️ En option 2, vider les données de navigation efface la base. Exporte régulièrement.
+
+## Le code d'accès
+
+Demandé après le choix du stockage. **À la première ouverture, il est saisi
+deux fois** — il n'est récupérable nulle part, donc autant éviter la faute de frappe.
 
 ## Confidentialité
 
@@ -73,7 +98,8 @@ manifest.webmanifest    icône et mode plein écran
 icone-180.png           icône d'écran d'accueil
 .nojekyll               empêche GitHub de filtrer les fichiers
 js/donnees.js           le fichier unique : stockage, export, import, fusion
+js/fichier.js           liaison au fichier iCloud (File System Access)
 js/contenus.js          templates de messages, playbook, repères réseau
 js/modules.js           les 6 modules
-js/app.js               verrou, navigation, démarrage
+js/app.js               démarrage en 2 étapes, verrou, navigation
 ```

@@ -50,6 +50,33 @@ export function charger() {
   return base;
 }
 
+/** Fichier lié (iCloud) — voir fichier.js. Reste nul si le navigateur ne gère pas. */
+let poigneeFichier = null;
+let minuteurFichier = null;
+
+export function lierFichier(poignee) {
+  poigneeFichier = poignee;
+}
+
+export const fichierLie = () => poigneeFichier;
+
+/**
+ * Écriture différée : on ne réécrit pas le fichier à chaque frappe, sinon
+ * iCloud passerait son temps à synchroniser. Une seconde de calme suffit.
+ */
+function ecrireFichierPlusTard() {
+  if (!poigneeFichier) return;
+  clearTimeout(minuteurFichier);
+  minuteurFichier = setTimeout(async () => {
+    try {
+      const { ecrire } = await import('./fichier.js');
+      await ecrire(poigneeFichier, JSON.stringify(base, null, 2));
+    } catch (e) {
+      console.warn('Écriture du fichier impossible :', e.message);
+    }
+  }, 1000);
+}
+
 export function sauver() {
   base.modifie_le = new Date().toISOString();
   try {
@@ -57,8 +84,22 @@ export function sauver() {
   } catch (e) {
     console.warn('Sauvegarde impossible :', e.message);
   }
+  ecrireFichierPlusTard();
   prevenir();
 }
+
+/** Remplace la base par le contenu d'un texte JSON (fichier lié au démarrage). */
+export function adopter(texte) {
+  const lu = JSON.parse(texte);
+  if (!lu || !Array.isArray(lu.prospects)) throw new Error('Fichier illisible.');
+  base = { ...structuredClone(BASE_VIDE), ...lu };
+  base.reglages = { ...BASE_VIDE.reglages, ...(lu.reglages ?? {}) };
+  try { localStorage.setItem(CLE, JSON.stringify(base)); } catch {}
+  prevenir();
+  return base;
+}
+
+export const contenuTexte = () => JSON.stringify(base, null, 2);
 
 /* --- Manipulation ------------------------------------------------------------- */
 

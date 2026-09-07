@@ -16,18 +16,42 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <!-- Verrou d'accès -->
+    <!-- Démarrage : 1) où ranger la base, 2) le code -->
     <div id="verrou" hidden>
       <div class="boite">
-        <div style="font-size: 40px">🛡️</div>
-        <h1 id="verrou-titre">AssurLead</h1>
-        <p class="aide" id="verrou-aide">Saisis ton code d'accès</p>
-        <input type="password" id="verrou-code" inputmode="text" placeholder="••••"
-               autocomplete="current-password" />
-        <button class="btn primaire large" id="verrou-bouton" style="margin-top: 12px">
-          Déverrouiller
-        </button>
-        <p class="aide" id="verrou-message" style="min-height: 20px"></p>
+
+        <!-- Étape 1 -->
+        <div id="etape-stockage" hidden>
+          <div style="font-size: 40px">📄</div>
+          <h1>Où ranger ta base ?</h1>
+          <p class="aide" id="stockage-explication"></p>
+
+          <button class="btn primaire large" id="stockage-fichier" style="margin-top: 18px">
+            Choisir mon fichier iCloud
+          </button>
+          <button class="btn large" id="stockage-appareil" style="margin-top: 8px">
+            Garder sur cet appareil
+          </button>
+          <p class="aide" id="stockage-message" style="min-height: 20px"></p>
+        </div>
+
+        <!-- Étape 2 -->
+        <div id="etape-code" hidden>
+          <div style="font-size: 40px">🛡️</div>
+          <h1 id="code-titre">AssurLead</h1>
+          <p class="aide" id="code-aide">Saisis ton code d'accès</p>
+
+          <input type="password" id="code-saisie" inputmode="text" placeholder="Code"
+                 autocomplete="current-password" />
+          <input type="password" id="code-confirmation" placeholder="Confirme le code"
+                 autocomplete="new-password" style="margin-top: 10px" hidden />
+
+          <button class="btn primaire large" id="code-bouton" style="margin-top: 12px">
+            Déverrouiller
+          </button>
+          <p class="aide" id="code-message" style="min-height: 20px"></p>
+        </div>
+
       </div>
     </div>
 
