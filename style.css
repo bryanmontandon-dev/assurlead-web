@@ -17,6 +17,13 @@
 
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
+/*
+ * Filet de sécurité : un sélecteur d'ID (#verrou { display: flex }) l'emporte
+ * sur la règle navigateur [hidden] { display: none }. Sans ce !important,
+ * masquer un élément avec .hidden = true reste sans effet visuel.
+ */
+[hidden] { display: none !important; }
+
 body {
   margin: 0;
   font-family: var(--police);
