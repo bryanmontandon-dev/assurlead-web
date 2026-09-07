@@ -10,6 +10,8 @@ import * as D from './donnees.js';
 import * as F from './fichier.js';
 import { VUES } from './modules.js';
 
+export const VERSION = '2026.09.07-2';
+
 const el = (id) => document.getElementById(id);
 const CLE_CODE = 'assurlead:code';
 const CLE_MODE = 'assurlead:mode-stockage'; // 'fichier' | 'appareil'
@@ -152,6 +154,8 @@ function ouvrirApp() {
   el('verrou').hidden = true;
   el('app').hidden = false;
   majEntete();
+  const pied = el('version');
+  if (pied) pied.textContent = `version ${VERSION}`;
   afficherVue(location.hash.slice(1) || 'dashboard');
 }
 
